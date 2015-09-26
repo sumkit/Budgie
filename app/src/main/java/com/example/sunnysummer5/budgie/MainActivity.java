@@ -10,15 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxCallback;
-import com.androidquery.callback.AjaxStatus;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.HashMap;
-
 public class MainActivity extends AppCompatActivity {
     TextView textView, dollarSign;
     EditText editText;
@@ -36,25 +27,6 @@ public class MainActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AQuery aq = new AQuery(getApplicationContext());
-                HashMap<String, String> hashMap = new HashMap<String, String>();
-                hashMap.put("language","unk");
-                hashMap.put("detectOrientation","true");
-                String url="";
-                aq.ajax(url, JSONArray.class, new AjaxCallback<JSONArray>() {
-                    @Override
-                    public void callback(String _url, JSONArray json, AjaxStatus status) {
-                        if(json != null) {
-                            try {
-                                System.out.println(json.get(0).toString());
-                            } catch (JSONException e) {
-                                System.out.println("error");
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-
                 Intent intent = new Intent(getApplicationContext(), HomeScreen.class);
                 intent.putExtra("Budget", editText.getText());
                 startActivity(intent);

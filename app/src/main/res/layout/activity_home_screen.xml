@@ -15,10 +15,28 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id = "@+id/pieChart"/>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Budget: $"
+                android:textSize="20dp"
+                android:id = "@+id/budget"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Spending money: $"
+                android:id = "@+id/budgetRemaining"
+                android:layout_below="@id/budget"
+                android:textSize="20dp" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id = "@+id/pieChart"/>
+        </RelativeLayout>
+
     </ScrollView>
 
 </RelativeLayout>

@@ -8,14 +8,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id = "@+id/budget_text"
-        android:textSize="30dp"
-        android:text="Budget"/>
+        android:id = "@+id/income_text"
+        android:textSize="25dp"
+        android:text="Income:"/>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id = "@+id/lin"
-        android:layout_below="@id/budget_text">
+        android:layout_below="@id/income_text">
         <TextView android:text="$" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id = "@+id/dollarSign"/>

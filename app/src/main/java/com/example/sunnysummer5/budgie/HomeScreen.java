@@ -6,10 +6,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class HomeScreen extends AppCompatActivity {
     Button add;
     ImageView imageView;
+    TextView remaining,budget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +20,9 @@ public class HomeScreen extends AppCompatActivity {
 
         add = (Button)findViewById(R.id.add);
         imageView = (ImageView)findViewById(R.id.pieChart);
+        remaining = (TextView)findViewById(R.id.budgetRemaining);
+        budget = (TextView)findViewById(R.id.budget);
+        budget.setText(getIntent().getStringExtra("Budget"));
     }
 
     @Override
