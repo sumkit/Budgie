@@ -3,24 +3,17 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
-    <WebView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id = "@+id/webview"></WebView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id = "@+id/income_text"
-        android:textSize="25dp"
-        android:text="Budget:"/>
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.sunnysummer5.budgie.Add">
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id = "@+id/lin"
-        android:layout_below="@id/income_text">
-        <TextView android:text="$" android:layout_width="wrap_content"
+        android:id = "@+id/linlay">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text = "$"
             android:id = "@+id/dollarSign"/>
         <EditText
             android:layout_width="fill_parent"
@@ -28,11 +21,17 @@
             android:id = "@+id/editText"
             android:hint="12.34"/>
     </LinearLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
-        android:layout_below="@id/lin"
-        android:id = "@+id/next"/>
+        android:layout_below="@id/linlay"
+        android:id="@+id/camera"
+        android:text = "camera"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/camera"
+        android:text = "+"/>
 
 </RelativeLayout>
