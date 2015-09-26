@@ -1,6 +1,7 @@
 package com.example.sunnysummer5.budgie;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -32,32 +33,55 @@ public class HomeScreen extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen);
 
         add = (Button)findViewById(R.id.add);
+        pieChart = (PieChart) findViewById(R.id.chart1);
+        budget = (TextView)findViewById(R.id.budget);
+        remaining = (TextView)findViewById(R.id.budgetRemaining);
+        budget.setText("Budget: $" + getIntent().getStringExtra("Budget").toString());
+        remaining.setText("Spending money: $" + getIntent().getStringExtra("Budget").toString());
+        if(Double.parseDouble(getIntent().getStringExtra("Budget").toString()) <
+                (0.1*Double.parseDouble(getIntent().getStringExtra("Budget")))) {
+            remaining.setTextColor(Color.RED);
+        }
+        else {
+            remaining.setTextColor(Color.BLACK);
+        }
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeScreen.this, Add.class);
-                intent.putExtra("Budget", budget.getText().toString());
+                intent.putExtra("Budget", budget.getText().toString().substring(9));
                 intent.putExtra("Pie", pie);
+                intent.putExtra("Spending", Double.parseDouble(remaining.getText().toString().substring(17)));
                 startActivity(intent);
             }
         });
-        pieChart = (PieChart) findViewById(R.id.chart1);
-        budget = (TextView)findViewById(R.id.budget);
-        remaining = (TextView)findViewById(R.id.budgetRemaining);
-        budget.setText("Budget: $" + getIntent().getStringExtra("Budget"));
 
         if(getIntent() != null) {
-            if(getIntent().getStringExtra("Caller").equals("HomeScreen")) {
+            if(getIntent().getStringExtra("Caller").toString().equals("MainActivity")) {
+                budget.setText("Budget: $"+getIntent().getStringExtra("Budget").toString());
+                remaining.setText("Spending money: $"+getIntent().getStringExtra("Budget").toString());
+                if(Double.parseDouble(getIntent().getStringExtra("Budget").toString()) <
+                        (0.1*Double.parseDouble(getIntent().getStringExtra("Budget")))) {
+                    remaining.setTextColor(Color.RED);
+                }
+                else {
+                    remaining.setTextColor(Color.BLACK);
+                }
+            }
+            else if(getIntent().getStringExtra("Caller").toString().equals("Add")) {
+                pie = getIntent().getDoubleArrayExtra("Pie").clone();
+                budget.setText("Budget: $"+getIntent().getStringExtra("Budget").toString());
                 double[] temp = getIntent().getExtras().getDoubleArray("Pie");
                 pie = temp.clone();
                 price = getIntent().getExtras().getDouble("Price");
-            }
-            else if(getIntent().getStringExtra("Caller").equals("MainActivity")) {
-                budget.setText(getIntent().getStringExtra("Budget"));
-            }
-            else if(getIntent().getStringExtra("Caller").equals("Add")) {
-                pie = getIntent().getDoubleArrayExtra("Pie").clone();
-                budget.setText(getIntent().getStringExtra("Budget").toString());
+                remaining.setText("Spending money: $"+Double.toString(getIntent().getExtras().getDouble("Spending")));
+                if(getIntent().getExtras().getDouble("Spending") <
+                        (0.1*Double.parseDouble(getIntent().getStringExtra("Budget").toString()))) {
+                    remaining.setTextColor(Color.RED);
+                }
+                else {
+                    remaining.setTextColor(Color.BLACK);
+                }
             }
         }
         PieChart chart = (PieChart) findViewById(R.id.chart1);
@@ -133,7 +157,7 @@ public class HomeScreen extends AppCompatActivity {
         PieDataSet set1 = new PieDataSet(yVals1, "");
         set1.setValueFormatter(new PercentFormatter());
         set1.setValueTextSize(20f);
-        set1.setSliceSpace(10f);
+        set1.setSliceSpace(0f);
         //XLabels x1 = chart.getXLabels();
         //x1.setTypeface
         //PieDataSet set2 = new PieDataSet(xVals, "");

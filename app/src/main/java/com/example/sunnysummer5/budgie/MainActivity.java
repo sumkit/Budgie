@@ -1,8 +1,6 @@
 package com.example.sunnysummer5.budgie;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -13,11 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.androidquery.util.AQUtility;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class MainActivity extends AppCompatActivity {
     TextView textView, dollarSign;
@@ -45,22 +38,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    public byte[] getBytes(String fileName) {
-        File imageFile = new File(fileName);
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(imageFile);
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            System.out.println("COULD NOT FIND FILE");
-            e.printStackTrace();
-        }
 
-        Bitmap bm = BitmapFactory.decodeStream(fis);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 70, stream);
-        return stream.toByteArray();
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

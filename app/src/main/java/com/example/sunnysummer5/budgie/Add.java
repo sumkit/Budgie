@@ -66,24 +66,17 @@ public class Add extends AppCompatActivity {
                 if(editText.getText().toString().length() == 0) {
                     intent.putExtra("Price", price);
                     for(int i = 0; i < pie.length; i++) {
-                        System.out.println("fuck");
-                        System.out.println(pie[i]);
-                        System.out.println(pie[i] += (temp[i]*price));
                         pie[i] += (temp[i]*price);
                     }
                 }
                 else {
-                    intent.putExtra("Price", editText.getText().toString());
-//                    for(Double d : pie) {
-//                        d = d*Double.parseDouble(editText.getText().toString());
-//                    }
+                    intent.putExtra("Price", Double.parseDouble(editText.getText().toString()));
+                    price = Double.parseDouble(editText.getText().toString());
                     for(int i = 0; i < pie.length; i++) {
-                        System.out.println("fuck");
-                        System.out.println(pie[i]);
-                        System.out.println(pie[i] += (temp[i]*Double.parseDouble(editText.getText().toString())));
                         pie[i] += (temp[i]*Double.parseDouble(editText.getText().toString()));
                     }
                 }
+                intent.putExtra("Spending", getIntent().getExtras().getDouble("Spending")-price);
                 intent.putExtra("Pie", pie);
                 startActivity(intent);
             }
