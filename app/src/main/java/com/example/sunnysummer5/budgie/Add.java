@@ -243,7 +243,13 @@ public class Add extends AppCompatActivity {
                         in.close();
                         imageToText = total;
                         price = getTotal(total);
-                        editText.setText(Double.toString(price));
+                        System.out.println(price);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                editText.setText(Double.toString(price));
+                            }
+                        });
                     } catch (Exception e)
                     {
                         e.printStackTrace();
