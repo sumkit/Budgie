@@ -14,17 +14,10 @@ import android.widget.TextView;
 
 import com.androidquery.util.AQUtility;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity {
     TextView textView, dollarSign;
@@ -44,48 +37,9 @@ public class MainActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread() {
-                    @Override
-                public void run() {
-                        try
-
-                        {
-                            URL oracle = new URL("http://api.projectoxford.ai/vision/v1/ocr?language=unk&detectOrientation=true");
-                            URLConnection yc = (HttpURLConnection) oracle.openConnection();
-
-
-                            yc.setRequestProperty("Content-Type", "application/json");
-                            yc.setRequestProperty("Ocp-Apim-Subscription-Key", "1baee771e6aa47998831f21b634a03ad");
-
-
-                            yc.setDoOutput(true);
-                            OutputStream out = new BufferedOutputStream(yc.getOutputStream());
-
-//                            BufferedImage image = ImageIO.read(new File("/home/dipper/Downloads/domo1.jpg"));
-//                            ByteArrayOutputStream out_stream = new ByteArrayOutputStream();
-//                            ImageIO.write( image, "jpg", out_stream );
-                            //byte[] byte_image = out_stream.toByteArray();
-                            byte[] byte_image = getBytes("/Macintosh HD/Users/sunnysummer5/Desktop/budgieLOGO.png");
-                            out.write(byte_image);
-
-                            out.close();
-
-                            BufferedReader in = new BufferedReader(new InputStreamReader(
-                                    yc.getInputStream()));
-                            String inputLine;
-                            while ((inputLine = in.readLine()) != null)
-                                System.out.println(inputLine);
-                            in.close();
-                        } catch (Exception e)
-                        {
-                            e.printStackTrace();
-                            System.out.println("ERROR");
-                        }
-                    }
-                }.start();
-
                 Intent intent = new Intent(MainActivity.this, HomeScreen.class);
                 intent.putExtra("Budget", editText.getText().toString());
+                intent.putExtra("Caller", "MainActivity");
                 startActivity(intent);
             }
         });

@@ -30,10 +30,16 @@
                 android:id = "@+id/budgetRemaining"
                 android:layout_below="@id/budget"
                 android:textSize="20dp" />
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id = "@+id/pieChart"/>
+                android:layout_below="@id/budgetRemaining"
+                android:gravity="center">
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart1"
+                    android:layout_width="350dp"
+                    android:layout_height="550dp"/>
+            </LinearLayout>
         </RelativeLayout>
 
     </ScrollView>

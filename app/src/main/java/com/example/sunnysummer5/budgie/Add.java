@@ -10,17 +10,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Add extends AppCompatActivity {
-
     Button camera, add;
     CheckBox food, clothing, entertainment, travel, misc;
-    Double[] pie = new Double[5];
+    EditText editText;
+    double[] pie = new double[5];
+    double[] temp = new double[5];
+
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-    public static final int MEDIA_TYPE_IMAGE = 1;
+    //public static final int MEDIA_TYPE_IMAGE = 1;
     private Bitmap bitmap;
+    private String imageToText;
+    private double price=0.0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +43,10 @@ public class Add extends AppCompatActivity {
         for(Double i : pie) {
             i=0.0;
         }
+        if(getIntent() != null) {
+            pie = getIntent().getDoubleArrayExtra("Pie").clone();
+        }
+        editText = (EditText) findViewById(R.id.editText);
         camera = (Button) findViewById(R.id.camera);
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,7 +59,33 @@ public class Add extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(Add.this, HomeScreen.class);
+                intent.putExtra("Caller","Add");
+                intent.putExtra("Pie", getIntent().getDoubleArrayExtra("Pie"));
+                intent.putExtra("Budget", getIntent().getStringExtra("Budget").toString());
+                if(editText.getText().toString().length() == 0) {
+                    intent.putExtra("Price", price);
+                    for(int i = 0; i < pie.length; i++) {
+                        System.out.println("fuck");
+                        System.out.println(pie[i]);
+                        System.out.println(pie[i] += (temp[i]*price));
+                        pie[i] += (temp[i]*price);
+                    }
+                }
+                else {
+                    intent.putExtra("Price", editText.getText().toString());
+//                    for(Double d : pie) {
+//                        d = d*Double.parseDouble(editText.getText().toString());
+//                    }
+                    for(int i = 0; i < pie.length; i++) {
+                        System.out.println("fuck");
+                        System.out.println(pie[i]);
+                        System.out.println(pie[i] += (temp[i]*Double.parseDouble(editText.getText().toString())));
+                        pie[i] += (temp[i]*Double.parseDouble(editText.getText().toString()));
+                    }
+                }
+                intent.putExtra("Pie", pie);
+                startActivity(intent);
             }
         });
 
@@ -89,27 +134,42 @@ public class Add extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.food:
                 if (checked) {
-                    pie[0]++;
+                    temp[0]++;
+                }
+                else {
+                    temp[0]--;
                 }
                 break;
             case R.id.clothing:
                 if (checked) {
-                    pie[1]++;
+                    temp[1]++;
+                }
+                else {
+                    temp[1]--;
                 }
                 break;
             case R.id.entertainment:
                 if(checked) {
-                    pie[2]++;
+                    temp[2]++;
+                }
+                else {
+                    temp[2]--;
                 }
                 break;
             case R.id.travel:
                 if(checked) {
-                    pie[3]++;
+                    temp[3]++;
+                }
+                else {
+                    temp[3]--;
                 }
                 break;
             case R.id.misc:
                 if(checked) {
-                    pie[4]++;
+                    temp[4]++;
+                }
+                else {
+                    temp[4]--;
                 }
                 break;
         }
@@ -136,12 +196,68 @@ public class Add extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public double getTotal(String receipt) {
+        //String pattern = "total(.*)(\\$)(\\d+\\.\\d\\d)";
+        String pattern = "(.*?)(\\$)(\\d+\\.\\d\\d)(.*)";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(receipt);
+        if (m.find()) {
+            String result = m.group(3);
+            double total = Double.parseDouble(result);
+            return total;
+        }
+        else return 0.0;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         InputStream stream = null;
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             bitmap = (Bitmap) extras.get("data");
+
+            new Thread() {
+                @Override
+                public void run() {
+                    try
+                    {
+                        URL oracle = new URL("http://api.projectoxford.ai/vision/v1/ocr?language=unk&detectOrientation=true");
+                        URLConnection yc = (HttpURLConnection) oracle.openConnection();
+
+
+                        yc.setRequestProperty("Content-Type", "application/octet-stream");
+                        yc.setRequestProperty("Ocp-Apim-Subscription-Key", "1baee771e6aa47998831f21b634a03ad");
+
+
+                        yc.setDoOutput(true);
+                        OutputStream out = new BufferedOutputStream(yc.getOutputStream());
+
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        out.write(byteArray);
+                        out.close();
+
+                        BufferedReader in = new BufferedReader(new InputStreamReader(
+                                yc.getInputStream()));
+                        String inputLine;
+                        String total = "";
+                        while ((inputLine = in.readLine()) != null) {
+                            System.out.println(inputLine);
+                            total += inputLine;
+                        }
+                        in.close();
+                        imageToText = total;
+                        price = getTotal(total);
+                        editText.setText(Double.toString(price));
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        System.out.println("ERROR");
+                    }
+                }
+            }.start();
         }
         else {
             System.out.println("NOT CAMERA");
