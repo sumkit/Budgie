@@ -22,7 +22,8 @@ public class HomeScreen extends AppCompatActivity {
         imageView = (ImageView)findViewById(R.id.pieChart);
         remaining = (TextView)findViewById(R.id.budgetRemaining);
         budget = (TextView)findViewById(R.id.budget);
-        budget.setText(getIntent().getStringExtra("Budget"));
+        System.out.println("g: "+getIntent().getStringExtra("Budget"));
+        budget.setText("Budget: $" + getIntent().getStringExtra("Budget"));
     }
 
     @Override

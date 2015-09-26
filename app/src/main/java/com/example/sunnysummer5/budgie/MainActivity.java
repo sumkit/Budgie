@@ -10,23 +10,56 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
     TextView textView, dollarSign;
     EditText editText;
     Button next;
+    static final String URL = "http://api.projectoxford.ai/vision/v1/ocr?language=unk&detectOrientation =true";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = (TextView)findViewById(R.id.budget_text);
+        textView = (TextView)findViewById(R.id.income_text);
         dollarSign = (TextView)findViewById(R.id.dollarSign);
         editText = (EditText)findViewById(R.id.editText);
         next = (Button)findViewById(R.id.next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AQuery aQuery = new AQuery(getApplicationContext());
+                HashMap<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/json");
+                params.put("Ocp-Apim-Subscription-Key","1baee771e6aa47998831f21b634a03ad");
+//                params.put("language","unk");
+//                params.put("detectOrientation","true");
+                aQuery.ajax(URL, params, JSONArray.class, new AjaxCallback<JSONArray>() {
+                   @Override
+                    public void callback(String _url, JSONArray json, AjaxStatus status) {
+                       if(json != null) {
+                           try {
+                               System.out.println(json.get(0).toString());
+                           } catch (JSONException e) {
+                               System.out.println("error");
+                               e.printStackTrace();
+                           }
+                       }
+                       else {
+                           System.out.println("null json");
+                       }
+                   }
+                });
+
                 Intent intent = new Intent(getApplicationContext(), HomeScreen.class);
                 intent.putExtra("Budget", editText.getText());
                 startActivity(intent);
