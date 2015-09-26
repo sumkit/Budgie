@@ -119,7 +119,7 @@ public class HomeScreen extends AppCompatActivity {
         //chart.setDrawYValues(true);
         chart.setDrawCenterText(true);
         chart.setCenterText("Your Spending");
-        chart.setCenterTextSize(25f);
+        chart.setCenterTextSize(30f);
         chart.setDrawHoleEnabled(true);
         chart.setDrawSliceText(false);
         chart.setRotationAngle(0);
@@ -142,11 +142,11 @@ public class HomeScreen extends AppCompatActivity {
         double entertainment = spending[2];
         double travel = spending[3];
         double misc = spending[4];
-        yVals1.add(new Entry((float) food, 0));
-        yVals1.add(new Entry((float) clothing, 1));
-        yVals1.add(new Entry((float) entertainment, 2));
-        yVals1.add(new Entry((float)travel, 3));
-        yVals1.add(new Entry((float) misc, 4));
+        if (food != 0.0) yVals1.add(new Entry((float) food, 0));
+        if (clothing != 0.0) yVals1.add(new Entry((float) clothing, 1));
+        if (entertainment != 0.0) yVals1.add(new Entry((float) entertainment, 2));
+        if (travel != 0.0) yVals1.add(new Entry((float)travel, 3));
+        if (misc != 0.0) yVals1.add(new Entry((float) misc, 4));
         ArrayList<String> xVals = new ArrayList<String>();
         xVals.add("Food");
         xVals.add("Clothing");
@@ -157,7 +157,7 @@ public class HomeScreen extends AppCompatActivity {
         PieDataSet set1 = new PieDataSet(yVals1, "");
         set1.setValueFormatter(new PercentFormatter());
         set1.setValueTextSize(20f);
-        set1.setSliceSpace(0f);
+        set1.setSliceSpace(10f);
         //XLabels x1 = chart.getXLabels();
         //x1.setTypeface
         //PieDataSet set2 = new PieDataSet(xVals, "");
@@ -197,9 +197,9 @@ public class HomeScreen extends AppCompatActivity {
         //colors.add(getResources().getColor(android.R.color.holo_orange_dark));
         set1.setColors(colors);
         Legend legend = chart.getLegend();
-        legend.setTextSize(10f);
+        legend.setTextSize(15f);
         legend.setForm(Legend.LegendForm.CIRCLE);
-        legend.setFormSize(15f);
+        legend.setFormSize(20f);
         legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         legend.setYEntrySpace(100f);
         legend.setWordWrapEnabled(true);
