@@ -30,6 +30,11 @@
             android:name=".Add"
             android:label="@string/title_activity_add" >
         </activity>
+        <activity
+            android:name=".Spash"
+            android:label="@string/title_activity_spash" >
+
+        </activity>
     </application>
 
 </manifest>
